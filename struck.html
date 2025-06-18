@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struk Pembelian Karya Seni</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f9f3e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 0;
+            color: #5a4a3a;
+        }
+        .receipt-container {
+            background-color: #fffaf0;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #e0d6c2;
+            position: relative;
+            overflow: hidden;
+        }
+        .receipt-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #FF8C00, #FFD700, #FF8C00);
+        }
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: normal;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #d4c9b8;
+            padding-bottom: 1rem;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .receipt-header img {
+            max-width: 120px;
+            margin-bottom: 1rem;
+        }
+        .receipt-title {
+            font-size: 1.2rem;
+            color: #5a4a3a;
+            margin-bottom: 0.5rem;
+        }
+        .receipt-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #d4c9b8;
+        }
+        .receipt-info div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .receipt-info span {
+            color: #7a6b5a;
+            font-size: 0.9rem;
+        }
+        .receipt-info strong {
+            color: #5a4a3a;
+            font-weight: normal;
+        }
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .receipt-table th {
+            background-color: #f5eee0;
+            padding: 0.75rem;
+            text-align: left;
+            color: #7a6b5a;
+            border-bottom: 1px solid #d4c9b8;
+            font-weight: normal;
+        }
+        .receipt-table td {
+            padding: 0.75rem;
+            border-bottom: 1px dashed #d4c9b8;
+            color: #5a4a3a;
+        }
+        .receipt-table tr:last-child td {
+            border-bottom: none;
+        }
+        .receipt-total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .total-box {
+            background-color: #f5eee0;
+            padding: 1.2rem 1.8rem;
+            border-radius: 4px;
+            text-align: right;
+            width: 60%;
+            border: 1px solid #e0d6c2;
+        }
+        .total-box div {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .grand-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #d4c9b8;
+        }
+        .receipt-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #7a6b5a;
+            border-top: 1px dashed #d4c9b8;
+            padding-top: 1rem;
+        }
+        .artistic-border {
+            height: 10px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,5 Q25,10 50,5 T100,5" fill="none" stroke="%23d4c9b8" stroke-width="1"/></svg>') repeat-x;
+            margin: 1.5rem 0;
+            opacity: 0.7;
+        }
+        .thank-you {
+            font-style: italic;
+            text-align: center;
+            color: #8B4513;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <div class="receipt-title">GALERI SENI</div>
+            <div style="font-size: 0.9rem; color: #7a6b5a;">Jl. Kesenian No. 123, Kota Seni</div>
+        </div>
+        
+        <h1>STRUK PEMBELIAN KARYA SENI</h1>
+        
+        <div class="receipt-info">
+            <div>
+                <span>Nomor Transaksi</span>
+                <strong>TRX-20230615-001</strong>
+                <span>Tanggal</span>
+                <strong>15 Juni 2023, 14:30 WIB</strong>
+            </div>
+            <div style="text-align: right;">
+                <span>Status</span>
+                <strong style="color: #FF8C00;">Sukses</strong>
+                <span>Metode</span>
+                <strong>Transfer Bank</strong>
+            </div>
+        </div>
+        
+        <table class="receipt-table">
+            <thead>
+                <tr>
+                    <th>Karya Seni</th>
+                    <th>Harga</th>
+                    <th>Jml</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gambar Patung</td>
+                    <td>Rp 8.500.000</td>
+                    <td>1</td>
+                    <td>Rp 8.500.000</td>
+                </tr>
+                <tr>
+                    <td>Gambar Gunung</td>
+                    <td>Rp 350.000</td>
+                    <td>2</td>
+                    <td>Rp 700.000</td>
+                </tr>
+                <tr>
+                    <td>Gambar Langit</td>
+                    <td>Rp 250.000</td>
+                    <td>1</td>
+                    <td>Rp 250.000</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="artistic-border"></div>
+        
+        <div class="receipt-total">
+            <div class="total-box">
+                <div>
+                    <span>Subtotal: </span>
+                    <strong>Rp 9.450.000</strong>
+                </div>
+                <div>
+                    <span>Diskon: </span>
+                    <strong>Rp 75.000</strong>
+                </div>
+                <div class="grand-total">
+                    <span>TOTAL: </span>
+                    <strong>Rp 9.375.000</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div class="thank-you">
+            Terima kasih telah membeli karya seni kami. Setiap pembelian mendukung seniman lokal.
+        </div>
+        
+    </div>
+</body>
+</html>

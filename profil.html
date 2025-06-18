@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Seni - Galeri Digital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .edit-profile-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ff8c00; /* Orange */
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .edit-profile-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-role {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .profile-bio {
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .primary-btn {
+            background-color: #ff8c00; /* Orange */
+            color: white;
+        }
+        
+        .secondary-btn {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .upload-btn {
+            background-color: #ff8c00; /* Orange */
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-btn:hover, .primary-btn:hover {
+            background-color: #e67e00; /* Darker orange */
+            transform: translateY(-2px);
+        }
+        
+        .secondary-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .upload-btn i {
+            font-size: 18px;
+        }
+        
+        .gallery-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .art-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .art-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .art-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .art-info {
+            padding: 15px;
+            background-color: white;
+        }
+        
+        .art-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .art-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .art-category {
+            display: inline-block;
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #555;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #ff8c00; /* Orange */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #ff8c00; /* Orange */
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 5px;
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ff8c00; /* Orange */
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff6b6b;
+            font-size: 18px;
+        }
+        
+        .favorite-btn:hover {
+            background-color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <button class="edit-profile-btn" id="editProfileBtn">
+                <i class="fas fa-edit"></i> Edit Profil
+            </button>
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic">
+            <h1 class="profile-name" id="profileName">Nama Pengguna</h1>
+            <div class="profile-bio" id="profileBio">
+                Saya seorang penikmat seni yang antusias mengumpulkan dan mengapresiasi karya seni dari berbagai seniman berbakat.
+            </div>
+            <div class="action-buttons">
+                <button class="btn upload-btn" id="uploadBtn">
+                    <i class="fas fa-upload"></i> Unggah Karya
+                </button>
+            </div>
+        </div>
+        
+        <div class="gallery-section">
+            <h2 class="section-title">
+                Koleksi Favorit
+                <button class="btn upload-btn" id="uploadBtn2" style="padding: 8px 15px; font-size: 14px;">
+                    <i class="fas fa-plus"></i> Baru
+                </button>
+            </h2>
+            
+            <div class="art-grid" id="artGrid">
+                <!-- Karya seni akan muncul di sini -->
+                <div class="empty-state">
+                    Belum ada karya favorit yang ditambahkan
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Upload Karya -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h2>Unggah Karya Baru</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="artTitle">Judul Karya</label>
+                    <input type="text" id="artTitle" required placeholder="Masukkan judul karya">
+                </div>
+                
+                <div class="form-group">
+                    <label for="artDescription">Deskripsi</label>
+                    <textarea id="artDescription" placeholder="Deskripsi karya (opsional)"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Gambar Karya</label>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 40px; margin-bottom: 10px;"></i>
+                        <p>Klik untuk memilih gambar atau seret ke sini</p>
+                        <input type="file" id="artImage" accept="image/*" style="display: none;">
+                    </div>
+                    <img id="imagePreview" class="image-preview" style="display: none;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="artCategory">Kategori</label>
+                    <select id="artCategory">
+                        <option value="lukisan">Lukisan</option>
+                        <option value="fotografi">Fotografi</option>
+                        <option value="digital">Digital Art</option>
+                        <option value="patung">Patung</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-upload"></i> Unggah Karya
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Profil -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeEditModal">&times;</button>
+            <h2>Edit Profil</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editName">Nama</label>
+                    <input type="text" id="editName" required placeholder="Masukkan nama Anda">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editBio">Bio</label>
+                    <textarea id="editBio" placeholder="Ceritakan tentang diri Anda"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Foto Profil</label>
+                    <div class="upload-area" id="profileUploadArea">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 40px; margin-bottom: 10px;"></i>
+                        <p>Klik untuk memilih foto profil atau seret ke sini</p>
+                        <input type="file" id="profileImage" accept="image/*" style="display: none;">
+                    </div>
+                    <img id="profileImagePreview" class="image-preview" style="display: none;">
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="btn secondary-btn" id="cancelEditProfile">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn primary-btn">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tombol Unggah Mengambang -->
+    <button class="floating-btn" id="floatingUploadBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script>
+        // Data awal
+        let userProfile = {
+            name: "Nama Pengguna",
+            bio: "Saya seorang penikmat seni yang antusias mengumpulkan dan mengapresiasi karya seni dari berbagai seniman berbakat.",
+            profilePic: "https://via.placeholder.com/150",
+        };
+
+        let artworks = [];
+
+        // Elemen DOM
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadBtn2 = document.getElementById('uploadBtn2');
+        const floatingUploadBtn = document.getElementById('floatingUploadBtn');
+        const uploadModal = document.getElementById('uploadModal');
+        const closeModal = document.getElementById('closeModal');
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadArea = document.getElementById('uploadArea');
+        const artImageInput = document.getElementById('artImage');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const profileUploadArea = document.getElementById('profileUploadArea');
+        const profileImageInput = document.getElementById('profileImage');
+        const profileImagePreview = document.getElementById('profileImagePreview');
+        const cancelEditProfile = document.getElementById('cancelEditProfile');
+        
+        const profileNameElement = document.getElementById('profileName');
+        const profileBioElement = document.getElementById('profileBio');
+        const artGrid = document.getElementById('artGrid');
+        
+        // Buka modal dari berbagai tombol
+        [uploadBtn, uploadBtn2, floatingUploadBtn].forEach(btn => {
+            btn.addEventListener('click', () => {
+                uploadModal.style.display = 'flex';
+            });
+        });
+        
+        // Buka modal edit profil
+        editProfileBtn.addEventListener('click', () => {
+            // Isi form dengan data saat ini
+            document.getElementById('editName').value = userProfile.name;
+            document.getElementById('editBio').value = userProfile.bio;
+            profileImagePreview.style.display = 'none';
+            editProfileModal.style.display = 'flex';
+        });
+        
+        // Tutup modal
+        closeModal.addEventListener('click', () => {
+            uploadModal.style.display = 'none';
+        });
+        
+        closeEditModal.addEventListener('click', () => {
+            editProfileModal.style.display = 'none';
+        });
+        
+        cancelEditProfile.addEventListener('click', () => {
+            editProfileModal.style.display = 'none';
+        });
+        
+        // Klik di luar modal untuk menutup
+        window.addEventListener('click', (e) => {
+            if (e.target === uploadModal) {
+                uploadModal.style.display = 'none';
+            }
+            if (e.target === editProfileModal) {
+                editProfileModal.style.display = 'none';
+            }
+        });
+        
+        // Handle upload area karya seni
+        uploadArea.addEventListener('click', () => {
+            artImageInput.click();
+        });
+        
+        // Handle upload area foto profil
+        profileUploadArea.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+        
+        // Drag and drop untuk karya seni
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ff8c00'; /* Orange */
+            uploadArea.style.backgroundColor = '#fff5e6'; /* Light orange */
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.backgroundColor = '';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length) {
+                artImageInput.files = e.dataTransfer.files;
+                handleImageUpload(e.dataTransfer.files[0], imagePreview);
+            }
+        });
+        
+        // Drag and drop untuk foto profil
+        profileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            profileUploadArea.style.borderColor = '#ff8c00'; /* Orange */
+            profileUploadArea.style.backgroundColor = '#fff5e6'; /* Light orange */
+        });
+        
+        profileUploadArea.addEventListener('dragleave', () => {
+            profileUploadArea.style.borderColor = '#ccc';
+            profileUploadArea.style.backgroundColor = '';
+        });
+        
+        profileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            profileUploadArea.style.borderColor = '#ccc';
+            profileUploadArea.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length) {
+                profileImageInput.files = e.dataTransfer.files;
+                handleImageUpload(e.dataTransfer.files[0], profileImagePreview);
+            }
+        });
+        
+        // Handle file input change karya seni
+        artImageInput.addEventListener('change', () => {
+            if (artImageInput.files.length) {
+                handleImageUpload(artImageInput.files[0], imagePreview);
+            }
+        });
+        
+        // Handle file input change foto profil
+        profileImageInput.addEventListener('change', () => {
+            if (profileImageInput.files.length) {
+                handleImageUpload(profileImageInput.files[0], profileImagePreview);
+            }
+        });
+        
+        // Fungsi untuk menangani upload gambar
+        function handleImageUpload(file, previewElement) {
+            // Validasi file
+            if (!file.type.match('image.*')) {
+                alert('Hanya file gambar yang diizinkan');
+                return;
+            }
+            
+            // Tampilkan preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewElement.src = e.target.result;
+                previewElement.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Handle form submission karya seni
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Dapatkan nilai form
+            const title = document.getElementById('artTitle').value;
+            const description = document.getElementById('artDescription').value;
+            const category = document.getElementById('artCategory').value;
+            
+            // Validasi sederhana
+            if (!title) {
+                alert('Judul karya harus diisi');
+                return;
+            }
+            
+            if (!artImageInput.files.length) {
+                alert('Anda harus memilih gambar karya');
+                return;
+            }
+            
+            // Buat objek karya baru
+            const newArtwork = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                category: category,
+                imageUrl: URL.createObjectURL(artImageInput.files[0]),
+                date: new Date().toLocaleDateString(),
+                isFavorite: true
+            };
+            
+            // Tambahkan ke array karya
+            artworks.push(newArtwork);
+            
+            // Perbarui tampilan galeri
+            updateArtGallery();
+            
+            // Tampilkan pesan sukses
+            alert(`Karya "${title}" berhasil ditambahkan ke favorit!`);
+            
+            // Reset dan tutup modal
+            uploadModal.style.display = 'none';
+            uploadForm.reset();
+            imagePreview.style.display = 'none';
+        });
+        
+        // Handle form submission edit profil
+        editProfileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Dapatkan nilai form
+            const newName = document.getElementById('editName').value;
+            const newBio = document.getElementById('editBio').value;
+            
+            // Validasi
+            if (!newName) {
+                alert('Nama harus diisi');
+                return;
+            }
+            
+            // Update data profil
+            userProfile.name = newName;
+            userProfile.bio = newBio;
+            
+            // Jika ada gambar profil baru
+            if (profileImageInput.files.length) {
+                userProfile.profilePic = URL.createObjectURL(profileImageInput.files[0]);
+                document.querySelector('.profile-pic').src = userProfile.profilePic;
+            }
+            
+            // Perbarui tampilan profil
+            profileNameElement.textContent = userProfile.name;
+            profileBioElement.textContent = userProfile.bio;
+            
+            // Tampilkan pesan sukses
+            alert('Profil berhasil diperbarui!');
+            
+            // Tutup modal
+            editProfileModal.style.display = 'none';
+        });
+        
+        // Fungsi untuk memperbarui tampilan galeri
+        function updateArtGallery() {
+            if (artworks.length === 0) {
+                artGrid.innerHTML = '<div class="empty-state">Belum ada karya favorit yang ditambahkan</div>';
+                return;
+            }
+            
+            artGrid.innerHTML = artworks.map(artwork => `
+                <div class="art-item">
+                    <button class="favorite-btn" data-id="${artwork.id}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <img src="${artwork.imageUrl}" alt="${artwork.title}" class="art-image">
+                    <div class="art-info">
+                        <div class="art-title">${artwork.title}</div>
+                        <div class="art-description">${artwork.description}</div>
+                        <div class="art-category">${getCategoryName(artwork.category)}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Tambahkan event listener untuk tombol favorit
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    toggleFavorite(id);
+                });
+            });
+        }
+        
+        // Fungsi untuk toggle status favorit
+        function toggleFavorite(id) {
+            artworks = artworks.filter(artwork => artwork.id !== id);
+            updateArtGallery();
+        }
+        
+        // Fungsi untuk mendapatkan nama kategori
+        function getCategoryName(category) {
+            const categories = {
+                'lukisan': 'Lukisan',
+                'fotografi': 'Fotografi',
+                'digital': 'Digital Art',
+                'patung': 'Patung',
+                'lainnya': 'Lainnya'
+            };
+            return categories[category] || category;
+        }
+        
+        // Inisialisasi tampilan
+        updateArtGallery();
+        profileNameElement.textContent = userProfile.name;
+        profileBioElement.textContent = userProfile.bio;
+    </script>
+</body>
+</html>

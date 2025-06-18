@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pameran Seni - Online & Offline</title>
+    <style>
+        /* CSS Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        /* Body Styles */
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        /* Logo Styles */
+        .logo h1 {
+            font-size: 24px;
+            color: #FF6B00;
+            font-weight: 700;
+        }
+        
+        /* Navigation Styles */
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #FF6B00;
+        }
+        
+        nav ul li a.active {
+            color: #FF6B00;
+            font-weight: 600;
+        }
+        
+        /* Profile Container Styles */
+        .profile-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #FF6B00;
+        }
+        
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Hero Section Styles */
+        .hero {
+            height: 400px;
+            background-image: url('https://source.unsplash.com/random/1600x900/?art,exhibition');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 20px;
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 50px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Highlight Section Styles */
+        .highlight-section {
+            display: flex;
+            margin-bottom: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        
+        .highlight-image {
+            flex: 1;
+            min-height: 400px;
+            background-image: url('https://source.unsplash.com/random/800x600/?art,exhibition,featured');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .highlight-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .highlight-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #FF6B00;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-content h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        
+        .highlight-content p {
+            margin-bottom: 25px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Exhibition Meta Styles */
+        .exhibition-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .exhibition-date {
+            margin-right: 15px;
+            font-weight: 500;
+            color: #FF6B00;
+        }
+        
+        .exhibition-type {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .offline-type {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .online-type {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .exhibition-location {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .exhibition-location i {
+            margin-right: 8px;
+            color: #FF6B00;
+        }
+        
+        /* Button Styles */
+        .view-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #FF6B00;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        
+        .view-button:hover {
+            background-color: #E05D00;
+        }
+        
+        /* Exhibition Tabs Styles */
+        .exhibition-types {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .exhibition-tab {
+            padding: 15px 30px;
+            background-color: #fff;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .exhibition-tab.active {
+            background-color: #FF6B00;
+            color: white;
+        }
+        
+        .exhibition-tab:hover {
+            color: #FF6B00;
+        }
+        
+        /* Section Title Styles */
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #222;
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #FF6B00;
+        }
+        
+        /* Exhibition Cards Styles */
+        .exhibitions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .exhibition-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: #ffffff;
+        }
+        
+        .exhibition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-image {
+            height: 200px;
+            background-color: #f5f7fa;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        
+        .card-content p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-date {
+            font-size: 13px;
+            font-weight: 500;
+            color: #FF6B00;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #FF6B00;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        
+        .footer-section a:hover {
+            color: #FF6B00;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background-color: #444;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #FF6B00;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #444;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            nav ul {
+                margin: 15px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .highlight-section {
+                flex-direction: column;
+            }
+            
+            .highlight-image {
+                min-height: 250px;
+            }
+            
+            .exhibition-types {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .exhibitions-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <h1>Galeri Seni</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="beranda.php">Beranda</a></li>
+                <li><a href="galery.html">Gallery</a></li>
+                <li><a href="pameran.html" class="active">Pameran</a></li>
+                <li><a href="tentang.html">Tentang</a></li>
+            </ul>
+        </nav>
+        
+       <div class="profile-container">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="profile-pic" id="profilePic">
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-info">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil">
+                    <div>
+                        <h3>naya imut</h3>
+                        <p>Seniman Lukis</p>
+                    </div>
+                </div>
+                <p class="bio">Saya seorang seniman visual yang berfokus pada lukisan abstrak dan instalasi seni. Karya saya terinspirasi oleh alam dan emosi manusia.</p>
+                <div class="profile-artworks">
+                    <h4>Karya Saya</h4>
+                    <div class="artwork-grid">
+                        <img src="https://source.unsplash.com/random/300x300?art1" alt="Karya 1">
+                        <img src="https://source.unsplash.com/random/300x300?art2" alt="Karya 2">
+                        <img src="https://source.unsplash.com/random/300x300?art3" alt="Karya 3">
+                        <img src="https://source.unsplash.com/random/300x300?art4" alt="Karya 4">
+                        <img src="https://source.unsplash.com/random/300x300?art5" alt="Karya 5">
+                        <img src="https://source.unsplash.com/random/300x300?art6" alt="Karya 6">
+                    </div>
+                </div>
+                <a href="#" class="upload-btn">Unggah Karya Baru</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Highlight Exhibition Section -->
+        <div class="highlight-section">
+            <div class="highlight-image"></div>
+            <div class="highlight-content">
+                <span class="highlight-badge">Pameran Unggulan</span>
+                <div class="card-image" style="background-image: url('https://cdn1.katadata.co.id/media/images/2022/07/26/Mengunjungi_Pameran_Seni_Rupa_Kontemporer_Indonesia_Transposisi_di_Gakeri_Nasional_Indonesia-2022_07_26-16_11_06_59d9c35ff58ec0694f94a94783bbe45b.jpg')"></div>
+                <h2>Art Jakarta 2023</h2>
+                <p>Pameran seni kontemporer terbesar di Asia Tenggara yang menampilkan karya-karya dari lebih 200 seniman lokal dan internasional. Tahun ini kami juga menyediakan tur virtual untuk mereka yang tidak bisa hadir secara fisik.</p>
+                <div class="exhibition-meta">
+                    <span class="exhibition-date">15-20 November 2023</span>
+                    <span class="exhibition-type offline-type">Offline</span>
+                </div>
+                <div class="exhibition-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Jakarta Convention Center, Senayan</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Exhibition Filter Tabs -->
+        <div class="exhibition-types">
+            <div class="exhibition-tab active" onclick="filterExhibitions('all')">Semua Pameran</div>
+            <div class="exhibition-tab" onclick="filterExhibitions('online')">Online</div>
+            <div class="exhibition-tab" onclick="filterExhibitions('offline')">Offline</div>
+        </div>
+        
+        <!-- Exhibition List Section -->
+        <h2 class="section-title">Daftar Pameran</h2>
+        <div class="exhibitions-container" id="exhibitionsContainer">
+            <!-- Offline Exhibition 1 -->
+            <div class="exhibition-card" data-type="offline">
+                <div class="card-image" style="background-image: url('https://img.harianjogja.com/posts/2021/10/09/1085099/biennale-oke.jpg')"></div>
+                <div class="card-content">
+                    <h3>Biennale Jogja XVI</h3>
+                    <p>Pameran seni rupa internasional dengan tema "Equator" yang menampilkan karya seniman dari negara-negara garis khatulistiwa.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">1 Okt - 30 Nov 2023</span>
+                        <span class="exhibition-type offline-type">Offline</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jogja National Museum</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Online Exhibition 1 -->
+            <div class="exhibition-card" data-type="online">
+                <div class="card-image" style="background-image: url('https://blooloop.com/wp-content/uploads/2021/06/teamlab-borderless-1024x576.jpeg')"></div>
+                <div class="card-content">
+                    <h3>Digital Art Experience</h3>
+                    <p>Eksplorasi seni digital dan interaktif dari seniman-seniman muda berbakat. Pameran ini dapat diakses secara online 24/7 selama masa pameran.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">10-30 Jan 2024</span>
+                        <span class="exhibition-type online-type">Online</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-globe"></i>
+                        <span>www.digitalartexhibition.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offline Exhibition 2 -->
+            <div class="exhibition-card" data-type="offline">
+                <div class="card-image" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqTwmztJDusG5nW_tWfxb7xJfEOI83AtR9rA&s')"></div>
+                <div class="card-content">
+                    <h3>Moments in Time</h3>
+                    <p>Pameran fotografi dokumenter oleh 20 fotografer Asia yang menangkap momen-momen penting dalam sejarah kontemporer.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">5-25 Des 2023</span>
+                        <span class="exhibition-type offline-type">Offline</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Galeri Nasional, Jakarta</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Online Exhibition 2 -->
+            <div class="exhibition-card" data-type="online">
+                <div class="card-image" style="background-image: url('https://i.ytimg.com/vi/3ewO-gy1VKo/maxresdefault.jpg')"></div>
+                <div class="card-content">
+                    <h3>Virtual Art Gallery</h3>
+                    <p>Galeri seni virtual dengan teknologi 360° yang memungkinkan pengunjung merasakan pengalaman seperti berada di galeri fisik.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">Buka Sepanjang Tahun</span>
+                        <span class="exhibition-type online-type">Online</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-globe"></i>
+                        <span>www.virtualartgallery.id</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offline Exhibition 3 -->
+            <div class="exhibition-card" data-type="offline">
+                <div class="card-image" style="background-image: url('https://jatengprov.go.id/wp-content/uploads/2024/08/IMG-20240801-WA0145-scaled.jpg')"></div>
+                <div class="card-content">
+                    <h3>Warisan Nusantara</h3>
+                    <p>Pameran seni tradisional dari berbagai daerah di Indonesia, termasuk batik, ukir, tenun, dan kerajinan tradisional lainnya.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">15 Feb - 15 Mar 2024</span>
+                        <span class="exhibition-type offline-type">Offline</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Museum Nasional, Jakarta</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Online Exhibition 3 -->
+            <div class="exhibition-card" data-type="online">
+                <div class="card-image" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9wePqquaZteJi9UZz7VjNBQIysBzEAYzGvw&s')"></div>
+                <div class="card-content">
+                    <h3>Contemporary Art Now</h3>
+                    <p>Platform pameran online khusus seni kontemporer dengan kurasi bulanan dan diskusi langsung dengan seniman melalui live streaming.</p>
+                    <div class="exhibition-meta">
+                        <span class="exhibition-date">Setiap Bulan</span>
+                        <span class="exhibition-type online-type">Online</span>
+                    </div>
+                    <div class="exhibition-location">
+                        <i class="fas fa-globe"></i>
+                        <span>www.contemporaryartnow.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tentang Kami</h3>
+                <p>Galeri Seni Digital adalah platform untuk memamerkan karya seni dari berbagai seniman berbakat di seluruh Indonesia.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            
+    
+    <!-- JavaScript -->
+    <script>
+        // Filter exhibitions by type
+        function filterExhibitions(type) {
+            const tabs = document.querySelectorAll('.exhibition-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const exhibitions = document.querySelectorAll('.exhibition-card');
+            exhibitions.forEach(exhibition => {
+                if (type === 'all') {
+                    exhibition.style.display = 'block';
+                } else {
+                    if (exhibition.dataset.type === type) {
+                        exhibition.style.display = 'block';
+                    } else {
+                        exhibition.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // View button functionality
+        const viewButtons = document.querySelectorAll('.view-button');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Here you can add functionality to view exhibition details
+                alert('Anda akan diarahkan ke halaman detail pameran');
+            });
+        });
+    </script>
+</body>
+</html>

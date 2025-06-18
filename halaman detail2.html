@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Jakarta 2023 - Detail Pameran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles - Same as main page */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: #FF6B00;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #FF6B00;
+        }
+        
+        nav ul li a.active {
+            color: #FF6B00;
+            font-weight: 600;
+        }
+        
+        .profile-container {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #FF6B00;
+        }
+        
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 5%;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        
+        .breadcrumb a:hover {
+            color: #FF6B00;
+        }
+        
+        .breadcrumb span {
+            color: #999;
+            margin: 0 5px;
+        }
+        
+        /* Hero Image */
+        .exhibition-hero {
+            height: 500px;
+            background-image: url('https://source.unsplash.com/1600x900/?art,exhibition,featured');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: end;
+        }
+        
+        .exhibition-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+        
+        .hero-info {
+            position: relative;
+            z-index: 1;
+            color: white;
+            padding: 40px 5%;
+            width: 100%;
+        }
+        
+        .exhibition-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #FF6B00;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .hero-info h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            font-size: 16px;
+        }
+        
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+        }
+        
+        .exhibition-details {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .exhibition-details h2 {
+            color: #FF6B00;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .exhibition-details p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .detail-section {
+            margin-bottom: 30px;
+        }
+        
+        .detail-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #FF6B00;
+            padding-bottom: 5px;
+        }
+        
+        .artist-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .artist-card {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .artist-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+        
+        .artist-card h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .artist-card p {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Sidebar */
+        .exhibition-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h3 {
+            color: #FF6B00;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        
+        .info-item i {
+            color: #FF6B00;
+            width: 20px;
+        }
+        
+        .info-item strong {
+            min-width: 80px;
+            color: #333;
+        }
+        
+        .ticket-card {
+            background: linear-gradient(135deg, #FF6B00, #E05D00);
+            color: white;
+            text-align: center;
+        }
+        
+        .price {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .price small {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .buy-button {
+            background: white;
+            color: #FF6B00;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .buy-button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .map-container {
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            margin-top: 15px;
+        }
+        
+        /* Gallery Preview */
+        .gallery-preview {
+            margin-top: 40px;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            background-color: #f5f7fa;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #FF6B00;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+        
+        .back-button:hover {
+            color: #E05D00;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 30px 15px;
+                gap: 30px;
+            }
+            
+            .hero-info h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .exhibition-details {
+                padding: 25px;
+            }
+            
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            nav ul {
+                margin: 15px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Galeri Seni</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="beranda.php">Beranda</a></li>
+                <li><a href="galery.html">Gallery</a></li>
+                <li><a href="pameran.html" class="active">Pameran</a></li>
+                <li><a href="tentang.html">Tentang</a></li>
+            </ul>
+        </nav>
+        
+        <div class="profile-container">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="profile-pic">
+        </div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="beranda.html">Beranda</a>
+        <span>/</span>
+        <a href="pameran.html">Pameran</a>
+        <span>/</span>
+        <span>Art Jakarta 2023</span>
+    </div>
+    
+    <!-- Hero Section -->
+    <div class="exhibition-hero">
+        <div class="hero-info">
+            <span class="exhibition-badge">Pameran Unggulan</span>
+            <h1>Art Jakarta 2023</h1>
+            <div class="hero-meta">
+                <span><i class="fas fa-calendar"></i> 15-20 November 2023</span>
+                <span><i class="fas fa-map-marker-alt"></i> Jakarta Convention Center</span>
+                <span><i class="fas fa-users"></i> 200+ Seniman</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Exhibition Details -->
+        <div class="exhibition-details">
+            <a href="pameran.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Daftar Pameran
+            </a>
+            
+            <h2>Tentang Pameran</h2>
+            <p>Art Jakarta 2023 adalah pameran seni kontemporer terbesar di Asia Tenggara yang menampilkan karya-karya dari lebih dari 200 seniman lokal dan internasional. Pameran ini menghadirkan berbagai medium seni mulai dari lukisan, patung, instalasi, video art, hingga seni digital.</p>
+            
+            <p>Tahun ini, Art Jakarta mengambil tema "Crossing Boundaries" yang mengeksplorasi bagaimana seni dapat melampaui batas-batas geografis, budaya, dan teknologi. Para pengunjung akan dapat menikmati karya-karya inovatif yang memadukan tradisi dan modernitas.</p>
+            
+            <div class="detail-section">
+                <h3>Seniman Unggulan</h3>
+                <div class="artist-list">
+                    <div class="artist-card">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Artist 1">
+                        <h4>Eko Nugroho</h4>
+                        <p>Seniman Visual</p>
+                    </div>
+                    <div class="artist-card">
+                        <img src="https://randomuser.me/api/portraits/women/25.jpg" alt="Artist 2">
+                        <h4>Melati Suryodarmo</h4>
+                        <p>Performance Artist</p>
+                    </div>
+                    <div class="artist-card">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Artist 3">
+                        <h4>Heri Dono</h4>
+                        <p>Installation Artist</p>
+                    </div>
+                    <div class="artist-card">
+                        <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="Artist 4">
+                        <h4>Arahmaiani</h4>
+                        <p>Multimedia Artist</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Program Khusus</h3>
+                <p>Selama pameran berlangsung, akan ada berbagai program khusus termasuk:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Talk show dengan seniman internasional</li>
+                    <li>Workshop seni untuk anak-anak dan dewasa</li>
+                    <li>Tur virtual untuk pengunjung online</li>
+                    <li>Lelang karya seni eksklusif</li>
+                    <li>Performance art setiap hari pukul 15.00</li>
+                </ul>
+            </div>
+            
+            <div class="gallery-preview">
+                <h3>Preview Karya</h3>
+                <div class="gallery-grid">
+                    <div class="gallery-item" style="background-image: url('https://source.unsplash.com/400x300?abstract,art')"></div>
+                    <div class="gallery-item" style="background-image: url('https://source.unsplash.com/400x300?sculpture,art')"></div>
+                    <div class="gallery-item" style="background-image: url('https://source.unsplash.com/400x300?painting,art')"></div>
+                    <div class="gallery-item" style="background-image: url('https://source.unsplash.com/400x300?installation,art')"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="exhibition-sidebar">
+            <!-- Exhibition Info -->
+            <div class="info-card">
+                <h3>Informasi Pameran</h3>
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <strong>Tanggal:</strong>
+                        <span>15-20 November 2023</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Waktu:</strong>
+                        <span>10.00 - 22.00 WIB</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <strong>Lokasi:</strong>
+                        <span>Jakarta Convention Center, Senayan</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <strong>Kapasitas:</strong>
+                        <span>2000 pengunjung/hari</span>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <i class="fas fa-map" style="font-size: 24px;"></i>
+                    <span style="margin-left: 10px;">Peta Lokasi</span>
+                </div>
+            </div>
+            
+            <!-- Ticket Info -->
+            <div class="info-card ticket-card">
+                <h3>Tiket Masuk</h3>
+                <div class="price">
+                    Rp 75.000
+                    <small>/orang</small>
+                </div>
+                <p style="margin-bottom: 20px; opacity: 0.9;">Sudah termasuk katalog pameran dan welcome drink</p>
+                <button class="buy-button">Beli Tiket Sekarang</button>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="info-card">
+                <h3>Hubungi Kami</h3>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+62 21 1234 5678</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>info@artjakarta.com</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.artjakarta.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Gallery item click handler
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                alert('Fitur galeri lengkap akan segera hadir!');
+            });
+        });
+        
+        // Buy ticket button
+        document.querySelector('.buy-button').addEventListener('click', function() {
+            alert('Anda akan diarahkan ke halaman pembelian tiket');
+        });
+        
+        // Profile click handler
+        document.querySelector('.profile-pic').addEventListener('click', function() {
+            window.location.href = 'profil.html';
+        });
+    </script>
+</body>
+</html>

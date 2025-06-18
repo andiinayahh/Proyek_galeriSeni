@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Karya Seni</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            color: #FF6B00;
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #FF6B00;
+        }
+        
+        .profile-container {
+            position: relative;
+            margin-left: 20px;
+        }
+        
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #FF6B00;
+            transition: transform 0.3s;
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.1);
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 300px;
+            padding: 20px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .profile-dropdown.show {
+            display: block;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-info img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+            border: 2px solid #FF6B00;
+        }
+        
+        .profile-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+            color: #333;
+        }
+        
+        .profile-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .profile-artworks {
+            margin-top: 1rem;
+        }
+        
+        .profile-artworks h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .artwork-grid img {
+            width: 100%;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .artwork-grid img:hover {
+            transform: scale(1.05);
+        }
+        
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #FF6B00;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 1rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #E05D00;
+        }
+        
+        .hero {
+            height: 400px;
+            background-image: url('https://source.unsplash.com/random/1600x900/?art,gallery');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 20px;
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .main-content {
+            padding: 50px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            position: relative;
+            padding-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #FF6B00;
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 3rem;
+        }
+        
+        .art-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .art-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .art-info {
+            padding: 15px;
+        }
+        
+        .art-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #222;
+        }
+        
+        .art-info p {
+            margin: 0 0 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .artist {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .artist img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            object-fit: cover;
+        }
+        
+        .artist span {
+            font-size: 0.8rem;
+            color: #555;
+        }
+        
+        .view-button {
+            background-color: #FF6B00;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .view-button:hover {
+            background-color: #E05D00;
+        }
+        
+        .exhibitions-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 20px;
+            margin-bottom: 3rem;
+            scrollbar-width: thin;
+        }
+        
+        .exhibition-card {
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .exhibition-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .exhibition-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .exhibition-info {
+            padding: 15px;
+        }
+        
+        .exhibition-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #222;
+        }
+        
+        .exhibition-info p {
+            margin: 0 0 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .date-location {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .date {
+            color: #FF6B00;
+            font-weight: bold;
+        }
+        
+        .location {
+            color: #3498db;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1rem;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #FF6B00;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .footer-section a {
+            display: block;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #FF6B00;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            
+            nav {
+                order: 3;
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .profile-container {
+                margin-left: auto;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .main-content {
+                padding: 30px 20px;
+            }
+            
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            nav ul li {
+                margin-left: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-dropdown {
+                width: 280px;
+                right: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Galeri Seni</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Beranda</a></li>
+                <li><a href="galery.html">Gallery</a></li>
+                <li><a href="pameran.html">Pameran</a></li>
+                <li><a href="tentang.html">Tentang</a></li>
+            </ul>
+        </nav>
+         <div class="profile-container">
+            <a href="profil.html">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="profile-pic" id="profilePic">
+            </a>
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-info">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil">
+                    <div>
+                        <h3>Naya Imut</h3>
+                        <p>Seniman Lukis</p>
+                    </div>
+                 </div>
+                <p class="bio">Saya seorang seniman visual yang berfokus pada lukisan abstrak dan instalasi seni. Karya saya terinspirasi oleh alam dan emosi manusia.</p>
+                <div class="profile-artworks">
+                    <h4>Karya Saya</h4>
+                    <div class="artwork-grid">
+                        <img src="https://source.unsplash.com/random/300x300?art1" alt="Karya 1">
+                        <img src="https://source.unsplash.com/random/300x300?art2" alt="Karya 2">
+                        <img src="https://source.unsplash.com/random/300x300?art3" alt="Karya 3">
+                        <img src="https://source.unsplash.com/random/300x300?art4" alt="Karya 4">
+                        <img src="https://source.unsplash.com/random/300x300?art5" alt="Karya 5">
+                        <img src="https://source.unsplash.com/random/300x300?art6" alt="Karya 6">
+                    </div>
+                </div>
+                <a href="profil.html" class="profile-btn">Lihat Profil Lengkap</a>
+            </div>
+        </div>
+    </header>
+        
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang di Galeri Seni Digital</h1>
+            <p>Temukan karya-karya seni terbaik dari berbagai seniman berbakat dan jelajahi pameran seni terbaru di sekitar Anda</p>
+        </div>
+    </section>
+    
+    <main class="main-content">
+        <section>
+            <h2 class="section-title">Karya Terbaru</h2>
+            <div class="gallery-container">
+                <div class="art-card">
+                    <img src="https://source.unsplash.com/random/600x400?painting1" alt="Lukisan Abstrak">
+                    <div class="art-info">
+                        <h3>Harmoni Chaos</h3>
+                        <p>Lukisan abstrak yang menggambarkan keseimbangan dalam kekacauan</p>
+                        <div class="artist">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Seniman">
+                            <span>Andi Wijaya</span>
+                        </div>
+                        <button class="view-button">Lihat Detail</button>
+                    </div>
+                </div>
+                
+                <div class="art-card">
+                    <img src="https://source.unsplash.com/random/600x400?painting2" alt="Patung Modern">
+                    <div class="art-info">
+                        <h3>Bentuk Tanpa Nama</h3>
+                        <p>Patung kontemporer dari bahan logam daur ulang</p>
+                        <div class="artist">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Seniman">
+                            <span>Dewi Kurnia</span>
+                        </div>
+                        <button class="view-button">Lihat Detail</button>
+                    </div>
+                </div>
+                
+                <div class="art-card">
+                    <img src="https://source.unsplash.com/random/600x400?painting3" alt="Fotografi Konseptual">
+                    <div class="art-info">
+                        <h3>Refleksi Diri</h3>
+                        <p>Seri fotografi konseptual tentang identitas manusia</p>
+                        <div class="artist">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Seniman">
+                            <span>Budi Santoso</span>
+                        </div>
+                        <button class="view-button">Lihat Detail</button>
+                    </div>
+                </div>
+                
+                <div class="art-card">
+                    <img src="https://source.unsplash.com/random/600x400?painting4" alt="Digital Art">
+                    <div class="art-info">
+                        <h3>Digital Dreams</h3>
+                        <p>Karya seni digital yang mengeksplorasi realitas virtual</p>
+                        <div class="artist">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Seniman">
+                            <span>Sarah Artista</span>
+                        </div>
+                        <button class="view-button">Lihat Detail</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title">Rekomendasi Pameran Offline</h2>
+            <div class="exhibitions-container">
+                <div class="exhibition-card">
+                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fkatadata.co.id%2Ffoto%2F62dfc4261e07e%2Ffoto-pameran-seni-rupa-kontemporer-di-galeri-nasional-indonesia&psig=AOvVaw1Jy8K2wYDk2ZWWd3ERSK1U&ust=1750045248215000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNDBvN3A8o0DFQAAAAAdAAAAABAa" alt="Pameran Seni Kontemporer">
+                    <div class="exhibition-info">
+                        <h3>Art Jakarta 2023</h3>
+                        <p>Pameran seni kontemporer terbesar di Indonesia</p>
+                        <div class="date-location">
+                            <span class="date">15-20 Nov 2023</span>
+                            <span class="location">Jakarta Convention Center</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <img src="https://source.unsplash.com/random/600x400?exhibition2" alt="Pameran Seni Rupa">
+                    <div class="exhibition-info">
+                        <h3>Biennale Jogja XVI</h3>
+                        <p>Pameran seni rupa internasional dengan tema "Equator"</p>
+                        <div class="date-location">
+                            <span class="date">1 Okt - 30 Nov 2023</span>
+                            <span class="location">Jogja National Museum</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <img src="https://source.unsplash.com/random/600x400?exhibition3" alt="Pameran Fotografi">
+                    <div class="exhibition-info">
+                        <h3>Moments in Time</h3>
+                        <p>Pameran fotografi dokumenter oleh 20 fotografer Asia</p>
+                        <div class="date-location">
+                            <span class="date">5-25 Des 2023</span>
+                            <span class="location">Galeri Nasional, Jakarta</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <img src="https://source.unsplash.com/random/600x400?exhibition4" alt="Pameran Seni Digital">
+                    <div class="exhibition-info">
+                        <h3>Digital Art Experience</h3>
+                        <p>Eksplorasi seni digital dan interaktif</p>
+                        <div class="date-location">
+                            <span class="date">10-30 Jan 2024</span>
+                            <span class="location">Senayan City, Jakarta</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <img src="https://source.unsplash.com/random/600x400?exhibition5" alt="Pameran Seni Tradisional">
+                    <div class="exhibition-info">
+                        <h3>Warisan Nusantara</h3>
+                        <p>Pameran seni tradisional dari berbagai daerah di Indonesia</p>
+                        <div class="date-location">
+                            <span class="date">15 Feb - 15 Mar 2024</span>
+                            <span class="location">Museum Nasional, Jakarta</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tentang Kami</h3>
+                <p>Galeri Seni Digital adalah platform untuk memamerkan karya seni dari berbagai seniman berbakat di seluruh Indonesia.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Link Cepat</h3>
+                <a href="#">Beranda</a>
+                <a href="#">Gallery</a>
+                <a href="#">Pameran</a>
+                <a href="#">Kontak</a>
+            </div>
+
+
+               <div class="copyright">
+             <p>&copy; 2023 Galeri Seni Digital. Semua Hak Dilindungi.</p>
+            </div>
+         </footer>
+            
+    <script>
+        // Toggle profile dropdown
+        const profilePic = document.getElementById('profilePic');
+        const profileDropdown = document.getElementById('profileDropdown');
+        
+         profilePic.addEventListener('click', function(e) {
+            // Hanya tampilkan dropdown jika yang diklik adalah gambar (bukan link)
+            if (e.target === profilePic) {
+                e.preventDefault();
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            }
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            profileDropdown.classList.remove('show');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        profileDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // View button functionality
+        const viewButtons = document.querySelectorAll('.view-button');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Here you can add functionality to view artwork details
+                alert('Fitur melihat detail karya akan ditampilkan di sini');
+            });
+        });
+        
+        // Close dropdown with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                profileDropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

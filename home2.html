@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Karya Seni</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            color: #FF6B00;
+            font-size: 1.8rem;
+        }
+        
+        .auth-buttons a {
+            margin-left: 15px;
+            padding: 8px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .login {
+            color: #333;
+            border: 1px solid #333;
+        }
+        
+        .login:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .register {
+            background-color: #FF6B00;
+            color: white;
+            border: 1px solid #FF6B00;
+        }
+
+        
+        .hero {
+            height: 400px;
+            background-image: url('https://source.unsplash.com/random/1600x900/?art,gallery');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .gallery {
+            padding: 50px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        
+        .gallery h2 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+        }
+        
+        .artworks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .artwork {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .artwork:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .artwork img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .artwork-info {
+            padding: 15px;
+        }
+        
+        .artwork-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #222;
+        }
+        
+        .artwork-info p {
+            margin: 0 0 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .view-button {
+            background-color: #FF6B00;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .view-button:hover {
+            background-color: #E05D00;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            color: #FF6B00;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .masuk-button {
+            background-color: #FF6B00;
+            color: white;
+        }
+
+        .masuk-button:hover {
+            background-color: #E05D00;
+        }
+
+        .cancel-button {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .cancel-button:hover {
+            background-color: #e1e1e1;
+        }
+
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        /* Style untuk tombol masuk dan daftar di header */
+.auth-buttons a.masuk {
+    color: #333;
+    border: 1px solid #333;
+    padding: 8px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.auth-buttons a.masuk:hover {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.auth-buttons a.daftar {
+    background-color: #FF6B00;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 1px solid #FF6B00;
+}
+
+.auth-buttons a.daftar:hover {
+    background-color: #E05D00;
+    border-color: #E05D00;
+}
+
+/* Style untuk tombol masuk dan daftar di modal (jika diperlukan) */
+.modal-button.masuk-button {
+    background-color: #FF6B00;
+    color: white;
+}
+
+.modal-button.masuk-button:hover {
+    background-color: #E05D00;
+}
+
+.modal-button.daftar-button {
+    background-color: #333;
+    color: white;
+}
+
+.modal-button.daftar-button:hover {
+    background-color: #222;
+}
+
+        .close:hover {
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .gallery {
+                padding: 30px 20px;
+            }
+            
+            .artworks {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-button {
+                width: 100%;
+            }
+            
+            .artworks {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Galeri Seni</h1>
+        </div>
+        <div class="auth-buttons">
+            <a href="login.html" class="masuk">Masuk</a>
+            <a href="daftar.html" class="daftar">Daftar</a>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang</h1>
+            <p>Jelajahi koleksi karya seni terbaik dari berbagai seniman berbakat di galeri kami. Temukan inspirasi dalam setiap karya.</p>
+        </div>
+    </section>
+    
+    <section class="gallery">
+        <h2>Koleksi Karya Seni</h2>
+        <div class="artworks">
+            <!-- Karya Seni akan di-generate oleh JavaScript -->
+        </div>
+    </section>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Login Diperlukan</h2>
+            <p>Untuk melihat detail karya seni, silakan login terlebih dahulu atau daftar jika Anda belum memiliki akun.</p>
+            <div class="modal-buttons">
+                <button class="modal-button masuk-button" onclick="redirectToLogin()">Login</button>
+                <button class="modal-button cancel-button" onclick="closeModal()">Nanti Saja</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data karya seni lengkap
+        const artworks = [
+            { title: "Pemandangan Senja", artist: "Seniman A", img: "https://source.unsplash.com/random/300x300/?painting,1" },
+            { title: "Abstraksi Warna", artist: "Seniman B", img: "https://source.unsplash.com/random/300x300/?painting,2" },
+            { title: "Potret Diri", artist: "Seniman C", img: "https://source.unsplash.com/random/300x300/?painting,3" },
+            { title: "Harmoni Alam", artist: "Seniman D", img: "https://source.unsplash.com/random/300x300/?painting,4" },
+            { title: "Ekspresi Bebas", artist: "Seniman E", img: "https://source.unsplash.com/random/300x300/?painting,5" },
+            { title: "Kota Tua", artist: "Seniman F", img: "https://source.unsplash.com/random/300x300/?painting,6" },
+            { title: "Lautan Biru", artist: "Seniman G", img: "https://source.unsplash.com/random/300x300/?painting,7" },
+            { title: "Bunga Musim Semi", artist: "Seniman H", img: "https://source.unsplash.com/random/300x300/?painting,8" },
+            { title: "Figur Manusia", artist: "Seniman I", img: "https://source.unsplash.com/random/300x300/?painting,9" },
+            { title: "Geometri Warna", artist: "Seniman J", img: "https://source.unsplash.com/random/300x300/?painting,10" },
+            { title: "Pohon Kehidupan", artist: "Seniman K", img: "https://source.unsplash.com/random/300x300/?painting,11" },
+            { title: "Impresi Kota", artist: "Seniman L", img: "https://source.unsplash.com/random/300x300/?painting,12" },
+            { title: "Air Terjun", artist: "Seniman M", img: "https://source.unsplash.com/random/300x300/?painting,13" },
+            { title: "Wajah-wajah", artist: "Seniman N", img: "https://source.unsplash.com/random/300x300/?painting,14" },
+            { title: "Pola Abstrak", artist: "Seniman O", img: "https://source.unsplash.com/random/300x300/?painting,15" },
+            { title: "Senja di Pantai", artist: "Seniman P", img: "https://source.unsplash.com/random/300x300/?painting,16" }
+        ];
+
+        // Fungsi untuk menampilkan karya seni
+        function displayArtworks() {
+            const artworksContainer = document.querySelector('.artworks');
+            artworksContainer.innerHTML = '';
+            
+            artworks.forEach((artwork, index) => {
+                const artworkElement = document.createElement('div');
+                artworkElement.className = 'artwork';
+                artworkElement.innerHTML = `
+                    <img src="${artwork.img}" alt="${artwork.title}" loading="lazy">
+                    <div class="artwork-info">
+                        <h3>${artwork.title}</h3>
+                        <p>${artwork.artist}</p>
+                        <button class="view-button" onclick="showLoginModal()">Lihat Detail</button>
+                    </div>
+                `;
+                artworksContainer.appendChild(artworkElement);
+            });
+        }
+
+        // Fungsi untuk menampilkan modal login
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Mencegah scrolling latar belakang
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Mengembalikan scrolling
+        }
+
+        // Fungsi untuk redirect ke halaman login
+        function redirectToLogin() {
+            // Ganti dengan URL halaman login yang sesuai
+            window.location.href = '#login';
+            closeModal();
+        }
+
+        // Event listener untuk menutup modal dengan berbagai cara
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Tutup modal dengan tombol ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Inisialisasi halaman saat DOM sudah loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            displayArtworks();
+            
+            // Event listener untuk tombol login di header
+            document.querySelector('.login').addEventListener('click', function(e) {
+                e.preventDefault();
+                redirectToLogin();
+            });
+            
+            // Event listener untuk tombol register di header
+            document.querySelector('.register').addEventListener('click', function(e) {
+                e.preventDefault();
+                // Ganti dengan URL halaman register yang sesuai
+                window.location.href = '#register';
+            });
+        });
+
+        // Fungsi untuk lazy loading images (opsional enhancement)
+        function setupLazyLoading() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src || img.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                images.forEach(img => imageObserver.observe(img));
+            }
+        }
+    </script>
+</body>
+</html>
